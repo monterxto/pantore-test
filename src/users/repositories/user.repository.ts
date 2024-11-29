@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { User } from '../entities/user.entity';
+import { FilterUserDto, SortUserDto } from '../dto/query-user.dto';
+import { IPaginationOptions } from 'src/utils/types/pagination-options';
 
 @Injectable()
 export class UsersRepository {
@@ -29,9 +31,9 @@ export class UsersRepository {
     return userObject || null;
   }
 
-  async update(id: User['_id'], payload: Partial<User>): Promise<User | null> {
+  async update(id: string, payload: Partial<User>): Promise<User | null> {
 
-    const filter = { _id: id.toString() };
+    const filter = { _id: id };
     const user = (await this.usersModel.findOne(filter)).toJSON();
 
     if (!user) {
@@ -49,10 +51,44 @@ export class UsersRepository {
 
     return userObject || null;
   }
+  
+  async findManyWithPagination({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterUserDto | null;
+    sortOptions?: SortUserDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<User[]> {
+    const where: FilterQuery<User> = {};
+    if (filterOptions?.roles?.length) {
+      where['role.id'] = {
+        $in: filterOptions.roles.map((role) => role.id),
+      };
+    }
+
+    const userObjects = await this.usersModel
+      .find(where)
+      .sort(
+        sortOptions?.reduce(
+          (accumulator, sort) => ({
+            ...accumulator,
+            [sort.orderBy]:
+              sort.order.toUpperCase() === 'ASC' ? 1 : -1,
+          }),
+          {},
+        ),
+      )
+      .skip((paginationOptions.page - 1) * paginationOptions.limit)
+      .limit(paginationOptions.limit);
+
+    return userObjects;
+  }
 
   async remove(id: string): Promise<void> {
     await this.usersModel.deleteOne({
-      _id: id.toString(),
+      _id: id,
     });
   }
 }
