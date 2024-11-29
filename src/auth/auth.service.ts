@@ -75,7 +75,7 @@ export class AuthService {
       email: dto.email,
       role: {
         id: String(RoleEnum.user),
-        name: 'user'
+        name: RoleEnum[RoleEnum.user]
       }
     });
   }
@@ -89,14 +89,15 @@ export class AuthService {
     }));
 
     const tokenExpires = Date.now() + (tokenExpiresInMinutes * 60000);
+
     const token = await this.jwtService.signAsync(
       {
-        id: data.id,
+        _id: data.id,
         role: data.role,
       },
       {
         secret: this.configService.getOrThrow('auth.secret', { infer: true }),
-        expiresIn: String(tokenExpiresInMinutes),
+        expiresIn: String(tokenExpires),
       },
     )
 
