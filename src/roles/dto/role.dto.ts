@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumberString, IsString } from 'class-validator';
+import { IsNumberString, IsOptional, IsString } from 'class-validator';
 
 export class RoleDto {
   @ApiProperty()
@@ -8,5 +8,6 @@ export class RoleDto {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   name: string;
 }
