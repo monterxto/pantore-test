@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MinLength, ValidateNested } from 'class-validator';
 import { RoleDto } from '../../roles/dto/role.dto';
 import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
 
@@ -21,6 +21,7 @@ export class CreateUserDto {
 
   @ApiPropertyOptional({ type: RoleDto })
   @IsOptional()
+  @ValidateNested()
   @Type(() => RoleDto)
   role?: RoleDto | null;
 }
