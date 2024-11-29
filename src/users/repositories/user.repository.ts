@@ -9,7 +9,7 @@ export class UsersRepository {
   constructor(
     @InjectModel(User.name)
     private readonly usersModel: Model<User>,
-  ) {}
+  ) { }
 
   async create(data: User): Promise<User> {
     const createdUser = new this.usersModel(data);
@@ -26,6 +26,27 @@ export class UsersRepository {
     if (!email) return null;
 
     const userObject = await this.usersModel.findOne({ email });
+    return userObject || null;
+  }
+
+  async update(id: User['_id'], payload: Partial<User>): Promise<User | null> {
+
+    const filter = { _id: id.toString() };
+    const user = (await this.usersModel.findOne(filter)).toJSON();
+
+    if (!user) {
+      return null;
+    }
+
+    const userObject = await this.usersModel.findOneAndUpdate(
+      filter,
+      {
+        ...user,
+        ...payload,
+      },
+      { new: true },
+    );
+
     return userObject || null;
   }
 
