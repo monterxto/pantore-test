@@ -13,6 +13,8 @@ import { ApiResponseProperty } from '@nestjs/swagger';
   },
 })
 export class User {
+  _id?: Types.ObjectId | null
+
   @ApiResponseProperty({
     type: String,
     example: 'john.doe@example.com',

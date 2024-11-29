@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { User } from '../entities/user.entity';
 
 @Injectable()
-export class UserRepository {
+export class UsersRepository {
   constructor(
     @InjectModel(User.name)
     private readonly usersModel: Model<User>,
