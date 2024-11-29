@@ -17,9 +17,7 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.OK)
   public async login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
-    const user = await this.authService.validateLogin(loginDto);
-    console.log(user)
-    return user
+    return await this.authService.validateLogin(loginDto);
   }
 
   @Post('register')

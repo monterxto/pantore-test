@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from './config/main/config.type';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
@@ -17,6 +17,7 @@ async function bootstrap() {
     },
   );
   app.useGlobalPipes(new ValidationPipe(validationOptions));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('API docs')
