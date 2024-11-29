@@ -2,11 +2,13 @@ import { HttpStatus, Injectable, UnprocessableEntityException } from '@nestjs/co
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/user.repository';
-import { RoleEnum } from 'src/roles/roles.enum';
+import { RoleEnum } from '../roles/roles.enum';
 import * as bcrypt from 'bcrypt';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { User } from './entities/user.entity';
 import { JwtPayloadType } from 'src/utils/types/jwt-payload.type';
+import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
+import { IPaginationOptions } from '../utils/types/pagination-options';
 
 @Injectable()
 export class UsersService {
@@ -54,6 +56,22 @@ export class UsersService {
     return this.usersRepository.findById(id);
   }
 
+  findManyWithPagination({
+    filterOptions,
+    sortOptions,
+    paginationOptions,
+  }: {
+    filterOptions?: FilterUserDto | null;
+    sortOptions?: SortUserDto[] | null;
+    paginationOptions: IPaginationOptions;
+  }): Promise<User[]> {
+    return this.usersRepository.findManyWithPagination({
+      filterOptions,
+      sortOptions,
+      paginationOptions,
+    });
+  }
+
   findByEmail(email: string): Promise<NullableType<User>> {
     return this.usersRepository.findByEmail(email);
   }
@@ -67,7 +85,7 @@ export class UsersService {
   }
 
   async update(
-    id: User['_id'],
+    id: string,
     payload: UpdateUserDto,
   ): Promise<User | null> {
 
@@ -81,7 +99,7 @@ export class UsersService {
         payload.email,
       );
 
-      if (userObject && userObject._id !== id) {
+      if (userObject && userObject._id.toString() !== id) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
@@ -113,7 +131,7 @@ export class UsersService {
     userJwtPayload: JwtPayloadType,
     payload: UpdateUserDto,
   ): Promise<any> {
-    return this.update(userJwtPayload._id, payload)
+    return this.update(userJwtPayload._id.toString(), payload)
   }
 
   remove(id: number) {
