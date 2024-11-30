@@ -16,40 +16,52 @@ export class UsersRepository {
   async create(data: User): Promise<User> {
     const createdUser = new this.usersModel(data);
     const userObject = await createdUser.save();
-    return userObject;
+    const userJson = userObject.toJSON()
+
+    return userJson;
   }
 
   async findById(id: string): Promise<User> {
     const userObject = await this.usersModel.findById(id);
-    return userObject || null;
+
+    if (!userObject) return null;
+
+    const userJson = userObject.toJSON()
+
+    return userJson;
   }
 
   async findByEmail(email: string): Promise<User> {
     if (!email) return null;
 
     const userObject = await this.usersModel.findOne({ email });
-    return userObject || null;
+
+    if (!userObject) return null;
+
+    const userJson = userObject.toJSON()
+
+    return userJson;
   }
 
   async update(id: string, payload: Partial<User>): Promise<User | null> {
 
     const filter = { _id: id };
-    const user = (await this.usersModel.findOne(filter)).toJSON();
+    const user = await this.usersModel.findOne(filter)
 
-    if (!user) {
-      return null;
-    }
+    if (!user) return null;
 
     const userObject = await this.usersModel.findOneAndUpdate(
       filter,
       {
-        ...user,
+        ...user.toJSON(),
         ...payload,
       },
       { new: true },
     );
 
-    return userObject || null;
+    const userJson = userObject.toJSON()
+
+    return userJson;
   }
   
   async findManyWithPagination({
@@ -82,8 +94,10 @@ export class UsersRepository {
       )
       .skip((paginationOptions.page - 1) * paginationOptions.limit)
       .limit(paginationOptions.limit);
+    
+    const usersJson = userObjects.map(userObject => userObject.toJSON())
 
-    return userObjects;
+    return usersJson;
   }
 
   async remove(id: string): Promise<void> {
