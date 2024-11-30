@@ -125,4 +125,8 @@ export class UsersService {
   ): Promise<any> {
     return this.update(userJwtPayload._id.toString(), payload)
   }
+  
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.remove(id);
+  }
 }

@@ -125,8 +125,24 @@ export class UsersController {
     return this.usersService.findById(request.user._id);
   }
   
+  @ApiBearerAuth()
+  @Delete('me')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async removeMe(@Request() request): Promise<void> {
+    return this.usersService.remove(request.user._id);
+  }
+  
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string): Promise<void> {
+    return this.usersService.remove(id);
   }
 }
