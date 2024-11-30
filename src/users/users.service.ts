@@ -76,14 +76,6 @@ export class UsersService {
     return this.usersRepository.findByEmail(email);
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
   async update(
     id: string,
     payload: UpdateUserDto,
@@ -132,9 +124,5 @@ export class UsersService {
     payload: UpdateUserDto,
   ): Promise<any> {
     return this.update(userJwtPayload._id.toString(), payload)
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }
