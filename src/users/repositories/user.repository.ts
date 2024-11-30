@@ -63,7 +63,7 @@ export class UsersRepository {
 
     return userJson;
   }
-  
+
   async findManyWithPagination({
     filterOptions,
     sortOptions,
@@ -77,6 +77,12 @@ export class UsersRepository {
     if (filterOptions?.roles?.length) {
       where['role.id'] = {
         $in: filterOptions.roles.map((role) => role.id),
+      };
+    }
+    if (filterOptions?.searchField && filterOptions?.searchValue) {
+      where[filterOptions.searchField] = {
+        $regex: filterOptions.searchValue,
+        $options: 'i'
       };
     }
 
@@ -94,7 +100,7 @@ export class UsersRepository {
       )
       .skip((paginationOptions.page - 1) * paginationOptions.limit)
       .limit(paginationOptions.limit);
-    
+
     const usersJson = userObjects.map(userObject => userObject.toJSON())
 
     return usersJson;

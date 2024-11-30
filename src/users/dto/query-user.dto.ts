@@ -15,6 +15,14 @@ export class FilterUserDto {
   @ValidateNested({ each: true })
   @Type(() => RoleDto)
   roles?: RoleDto[] | null;
+
+  @ApiPropertyOptional({ description: 'Field to search' })
+  @IsOptional()
+  searchField?: string;
+  
+  @ApiPropertyOptional({ description: 'Search value' })
+  @IsOptional()
+  searchValue?: string;
 }
 
 export class SortUserDto {
