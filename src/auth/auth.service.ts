@@ -84,11 +84,11 @@ export class AuthService {
     id: string;
     role: User['role'];
   }) {
-    const tokenExpiresInMinutes = Number(this.configService.getOrThrow('auth.expires', {
+    const tokenExpiresInMinutes = this.configService.getOrThrow('auth.expires', {
       infer: true,
-    }));
+    });
 
-    const tokenExpires = Date.now() + (tokenExpiresInMinutes * 60000);
+    const tokenExpires = Date.now() + (Number(tokenExpiresInMinutes) * 60000);
 
     const token = await this.jwtService.signAsync(
       {
@@ -97,7 +97,7 @@ export class AuthService {
       },
       {
         secret: this.configService.getOrThrow('auth.secret', { infer: true }),
-        expiresIn: String(tokenExpires),
+        expiresIn: `${tokenExpiresInMinutes}m`,
       },
     )
 
