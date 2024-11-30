@@ -8,8 +8,10 @@ import { ApiResponseProperty } from '@nestjs/swagger';
 @Schema({
   timestamps: true,
   toJSON: {
-    virtuals: true,
-    getters: true,
+    transform(doc, ret) {
+      ret._id = ret._id.toString()
+      delete ret.__v
+    },
   },
 })
 export class User {
