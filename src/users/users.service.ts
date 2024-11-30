@@ -122,7 +122,8 @@ export class UsersService {
   async updateMe(
     userJwtPayload: JwtPayloadType,
     payload: UpdateUserDto,
-  ): Promise<any> {
+  ): Promise<User | null> {
+    if(userJwtPayload.role.id != RoleEnum.admin.toString()) delete payload['role']
     return this.update(userJwtPayload._id.toString(), payload)
   }
   
