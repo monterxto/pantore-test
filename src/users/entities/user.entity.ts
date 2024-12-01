@@ -11,6 +11,7 @@ import { ApiResponseProperty } from '@nestjs/swagger';
     transform(doc, ret) {
       ret._id = ret._id.toString()
       delete ret.__v
+      Object.setPrototypeOf(ret, Object.getPrototypeOf(new User()))
     },
   },
 })
