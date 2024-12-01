@@ -80,7 +80,6 @@ export class UsersService {
     id: string,
     payload: UpdateUserDto,
   ): Promise<User | null> {
-
     if (payload.password) {
       const salt = await bcrypt.genSalt();
       payload.password = await bcrypt.hash(payload.password, salt);

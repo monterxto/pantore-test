@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { User } from '../entities/user.entity';
 import { FilterUserDto, SortUserDto } from '../dto/query-user.dto';
-import { IPaginationOptions } from 'src/utils/types/pagination-options';
+import { IPaginationOptions } from '../../utils/types/pagination-options';
 
 @Injectable()
 export class UsersRepository {
@@ -25,7 +25,6 @@ export class UsersRepository {
     const userObject = await this.usersModel.findById(id);
 
     if (!userObject) return null;
-
     const userJson = userObject.toJSON()
 
     return userJson;
