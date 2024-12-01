@@ -10,7 +10,7 @@ Backend do teste da Pantore.
 
 [Documentação completa aqui](/docs/readme.md)
 
-Endereço na nuvem: <http://ec2-52-67-198-116.sa-east-1.compute.amazonaws.com/docs>
+Endereço na nuvem: <http://ec2-18-231-253-168.sa-east-1.compute.amazonaws.com/docs>
 
 ## Utilizado no teste
 
