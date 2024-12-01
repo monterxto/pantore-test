@@ -15,13 +15,13 @@
 1. Clonar repositório
 
    ```bash
-   git clone sss
+   git clone https://github.com/monterxto/pantore-test.git
    ```
 
 1. Dentro do diretório do projeto copie o conteudo de `env-example` para `.env`.
 
    ```bash
-   cd sss/
+   cd pantore-test
    cp env-example .env
    ```
 
@@ -62,13 +62,13 @@ Para iniciar rápido, utilize os comandos a seguir:
 1. Clonar repositório
 
    ```bash
-   git clone sss
+   git clone https://github.com/monterxto/pantore-test.git
    ```
 
 1. Dentro do diretório do projeto copie o conteudo de `env-example` para `.env`.
 
    ```bash
-   cd sss/
+   cd pantore-test/
    cp env-example .env
    ```
 
