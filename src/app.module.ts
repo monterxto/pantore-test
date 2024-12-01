@@ -23,6 +23,7 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
         appConfig
       ],
       envFilePath: ['.env'],
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
     infrastructureDatabaseModule,
     AuthModule
