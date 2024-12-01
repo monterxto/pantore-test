@@ -31,14 +31,6 @@ class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   API_PREFIX: string;
-
-  @IsString()
-  @IsOptional()
-  APP_FALLBACK_LANGUAGE: string;
-
-  @IsString()
-  @IsOptional()
-  APP_HEADER_LANGUAGE: string;
 }
 
 export default registerAs<AppConfig>('app', () => {
