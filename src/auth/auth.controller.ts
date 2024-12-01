@@ -12,6 +12,13 @@ import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+  
+  @Post('register')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
+    return this.authService.register(createUserDto);
+  }
+  
   @SerializeOptions({
     groups: ['me'],
   })
@@ -22,11 +29,5 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   public async login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return await this.authService.validateLogin(loginDto);
-  }
-
-  @Post('register')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
-    return this.authService.register(createUserDto);
   }
 }
